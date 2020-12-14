@@ -39,7 +39,7 @@ void find_bridges(vector<vector<int>> &adj,int n)
     for(int i=0;i<n;i++)
     {
         if(disc[i]==-1)
-            dfs(0,adj,disc,low,parent,bridges);
+            dfs(i,adj,disc,low,parent,bridges);
     }
     for(auto i:bridges)
     {
