@@ -8,13 +8,19 @@ int main()
 	#endif
 	int x,y,t;
 	cin>>x>>y>>t;
+	if(t>x+y){
+		cout<<"Not Possible"<<endl;
+		return 0;
+	}
+
 	// x is the limit of water jug 1 can hold and y for jug 2
 	queue<pair<int,int>> q;
 	// queue for storing levels of each jug
 	q.push({0,0});
-	v.push_back(q.front());
+	
 	vector<pair<int,int>> ans;
 	// ans for storing the path
+	bool found=false;
 	vector<vector<bool>> visited(x+1,vector<bool>(y+1,false));
 	while(!q.empty()){
 		int x1=q.front().first,y1=q.front().second;
@@ -28,29 +34,17 @@ int main()
 		}
 		ans.push_back({x1,y1});
 		if((x1==t && y1==0) || (x1==0 && y1==t)){
+			found=true;
 			break;
-			// if got out target then stop
+			// if got our target then stop
 		}
-		if(x1==t && y1==y)
-		{
-			q.push({t,0});
-			// if jug1 has target value and jug2 is full then we will empty jug2
-		}	
-		if(x1==x && y1==t)
-		{
-			q.push({0,t});
-			// if jug2 has target value and jug1 is full then we will empty jug1
-		}
-		if(x1==0)
-		{
-			q.push({x,y1});
-			// filling jug1
-		}
-		if(y1==0)
-		{
-			q.push({x1,y});
-			//filling jug2
-		}
+		// empty one jug
+		q.push({x1,0});
+		q.push({0,y1});
+		// fill one jug
+		q.push({x1,y});
+		q.push({x,y1});
+
 		if(x1>0){
 			// transfering from jug1 to jug2
 			if(x1+y1>y){
@@ -76,9 +70,14 @@ int main()
 			}
 		}
 	}
-	for(auto i:ans)
+	if(found)
 	{
-		// printing the path to reach target value
-		cout<<i.first<<" "<<i.second<<endl;
+		for(auto i:ans)
+		{
+			// printing the path to reach target value
+			cout<<i.first<<" "<<i.second<<endl;
+		}
 	}
+	else
+		cout<<"Not Possible"<<endl;
 }
